@@ -6,7 +6,7 @@ import { CreateComponent } from './components/create/create.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'detail/:id', component: DetailComponent},
+  { path: 'detail/:type/:id', component: DetailComponent},
   { path: 'new', component: CreateComponent },
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: HomeComponent },

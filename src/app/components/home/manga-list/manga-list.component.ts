@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Manga } from '../../../models/manga';
 
 @Component({
   selector: 'app-manga-list',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./manga-list.component.css']
 })
 export class MangaListComponent implements OnInit {
+
+
+  @Input() mangas: Manga[];
 
   constructor() { }
 

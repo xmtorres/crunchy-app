@@ -1,1 +1,10 @@
-<p>manga-card works!</p>
+<mat-card class="manga-card">
+    <mat-card-header>
+      <mat-card-title> {{manga.title}} </mat-card-title>
+      <mat-card-subtitle>By {{manga.author}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{manga.imageURL}}" alt="{{manga.title}}">
+    <mat-card-actions>
+      <button routerLink="/detail/manga/{{manga.id}}" routerLinkActive="router-link-active" mat-button>View</button>
+    </mat-card-actions>
+  </mat-card>

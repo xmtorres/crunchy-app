@@ -1,1 +1,10 @@
-<p>anime-card works!</p>
+<mat-card class="anime-card">
+    <mat-card-header>
+      <mat-card-title> {{anime.title}} </mat-card-title>
+      <mat-card-subtitle> {{anime.episodes}} Episodes</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{anime.imageURL}}" alt="{{anime.title}}">
+    <mat-card-actions>
+      <button routerLink="/detail/anime/{{anime.id}}" routerLinkActive="router-link-active" mat-button>View</button>
+    </mat-card-actions>
+  </mat-card>
