@@ -1,6 +1,8 @@
-
+.detail-button{
+    margin:1%;
+}
 .anime-detail{
     margin: 1%;
     max-width: 600px;
-max-height: fit-content;
+    max-height: fit-content;
 }

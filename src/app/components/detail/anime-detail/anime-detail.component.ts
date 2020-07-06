@@ -49,8 +49,12 @@ export class AnimeDetailComponent implements OnInit {
     });
   }
 
+  goBack(): void{
+    this.location.back();
+  }
+
   deleteAnime(): void {
     this.animeService.deleteAnime(this.anime.id)
-      .subscribe(() => this.location.back());
+      .subscribe(() => this.goBack());
   }
 }

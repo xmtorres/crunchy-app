@@ -1,0 +1,9 @@
+.detail-button{
+    margin:1%;
+}
+
+.manga-detail{
+    margin: 1%;
+    max-width: 600px;
+    max-height: fit-content;
+}

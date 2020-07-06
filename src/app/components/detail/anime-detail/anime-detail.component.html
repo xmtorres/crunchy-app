@@ -1,4 +1,7 @@
 <ng-container *ngIf="anime && category">
+  <button mat-fab color="primary" aria-label="Go back" class="detail-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
     <mat-card class="anime-detail">
         <mat-card-header>
           <div mat-card-avatar></div>
