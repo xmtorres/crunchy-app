@@ -1,1 +1,6 @@
-<p>detail number {{animeId}} works!</p>
+<ng-container *ngIf="isAnime">
+    <app-anime-detail [anime]="anime" class="detail-container"></app-anime-detail>
+</ng-container>
+<ng-container *ngIf="isManga">
+    <app-manga-detail [manga]="manga" class="detail-container"></app-manga-detail>
+</ng-container>

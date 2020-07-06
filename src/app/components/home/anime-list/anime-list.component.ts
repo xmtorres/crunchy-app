@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Anime } from '../../../models/anime';
+import { Category } from 'src/app/models/category';
 
 @Component({
   selector: 'app-anime-list',
@@ -9,6 +10,7 @@ import { Anime } from '../../../models/anime';
 export class AnimeListComponent implements OnInit {
 
   @Input() animes: Anime[];
+  @Input() categories: Category[];
 
   constructor() { }
 

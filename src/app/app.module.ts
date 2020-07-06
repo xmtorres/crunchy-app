@@ -8,6 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +24,9 @@ import { AnimeCardComponent } from './components/home/anime-list/anime-card/anim
 import { MangaCardComponent } from './components/home/manga-list/manga-card/manga-card.component';
 import { AnimeListComponent } from './components/home/anime-list/anime-list.component';
 import { MangaListComponent } from './components/home/manga-list/manga-list.component';
+import { AnimeDetailComponent } from './components/detail/anime-detail/anime-detail.component';
+import { MangaDetailComponent } from './components/detail/manga-detail/manga-detail.component';
+import { DeleteModalComponent } from './components/modals/delete-modal/delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +40,10 @@ import { MangaListComponent } from './components/home/manga-list/manga-list.comp
     AnimeCardComponent,
     MangaCardComponent,
     AnimeListComponent,
-    MangaListComponent
+    MangaListComponent,
+    AnimeDetailComponent,
+    MangaDetailComponent,
+    DeleteModalComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +56,9 @@ import { MangaListComponent } from './components/home/manga-list/manga-list.comp
     MatIconModule,
     MatTabsModule,
     MatCardModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

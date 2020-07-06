@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DetailType } from '../../../assets/enums/detailtype';
+import { AnimeService } from 'src/app/services/anime-service/anime.service';
+import { MangaService } from 'src/app/services/manga-service/manga.service';
+import { Anime } from 'src/app/models/anime';
+import { Manga } from 'src/app/models/manga';
 
 @Component({
   selector: 'app-detail',
@@ -10,20 +14,39 @@ import { DetailType } from '../../../assets/enums/detailtype';
 
 export class DetailComponent implements OnInit {
 
-  animeId: number;
+  routeId: number;
   detailType: string;
   isAnime: boolean;
+  isManga: boolean;
+  anime: Anime;
+  manga: Manga;
 
   constructor(
     private route: ActivatedRoute,
+    private animeService: AnimeService,
+    private mangaService: MangaService,
   ) {}
 
   ngOnInit(): void {
-    this.animeId = +this.route.snapshot.paramMap.get('id');
+    this.routeId = +this.route.snapshot.paramMap.get('id');
     this.detailType = this.route.snapshot.paramMap.get('type');
 
-    console.log(this.animeId);
-    console.log(this.detailType);
+    if(this.detailType === DetailType.ANIME){
+      this.getAnime();
+      this.isAnime = true;
+    } else if(this.detailType === DetailType.MANGA){
+      this.getManga();
+      this.isManga = true;
+    }
   }
 
+  getAnime(): void{
+    this.animeService.getAnime(this.routeId)
+      .subscribe(anime => this.anime = anime);
+  }
+
+  getManga(): void{
+    this.mangaService.getManga(this.routeId)
+      .subscribe(manga => this.manga = manga);
+  }
 }
