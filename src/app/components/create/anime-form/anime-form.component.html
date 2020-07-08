@@ -1,6 +1,6 @@
 <div class="form-container">
   <form [formGroup]="animeForm" class="anime-form">
-  <h1 class="headline form-text">Create your anime!</h1>
+  <h1 class="headline form-text"> {{isEditing ? 'Edit your anime!' : 'Create your anime!'}} </h1>
   
   <mat-form-field appearance="fill" class="field-full-width">
     <mat-label>Title</mat-label>
@@ -13,7 +13,7 @@
     <textarea matInput placeholder="Ex. It goes about a boy who..." formControlName="description" [(ngModel)]="anime.description" cdkTextareaAutosize
     #autosize="cdkTextareaAutosize"
     cdkAutosizeMinRows="1"
-    cdkAutosizeMaxRows="5"></textarea>
+    cdkAutosizeMaxRows="8"></textarea>
   </mat-form-field>
   
   <mat-form-field appearance="fill" class="field-full-width">
@@ -33,8 +33,8 @@
   <label id="form-radio-group-label" class="form-text">Is it complete?</label>
   <mat-radio-group class="form-radio-group"
   aria-labelledby="form-radio-group-label" formControlName="isComplete" [(ngModel)]="anime.isComplete">
-    <mat-radio-button [value]="true" class="form-radio-button">Yes</mat-radio-button>
-    <mat-radio-button [value]="false" class="form-radio-button">No</mat-radio-button>
+    <mat-radio-button [value]="true" class="form-radio-button" color="primary">Yes</mat-radio-button>
+    <mat-radio-button [value]="false" class="form-radio-button" color="primary">No</mat-radio-button>
   </mat-radio-group>
 
   <mat-form-field appearance="fill" class="field-full-width">
@@ -45,8 +45,8 @@
   </mat-form-field>
   
   <div class="button-container">
-    <button mat-raised-button color="primary" (click)="onSubmitClick()">Submit</button>
-    <button mat-raised-button>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSubmitClick()" [disabled]="!animeForm.valid">Submit</button>
+    <button mat-raised-button (click)="onCancelClick()">Cancel</button>
   </div>
 </form>
 </div>

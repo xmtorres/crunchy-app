@@ -18,6 +18,7 @@ import { MatCheckboxModule} from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -74,6 +75,7 @@ import { DeleteModalComponent } from './components/modals/delete-modal/delete-mo
     MatInputModule,
     MatRadioModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

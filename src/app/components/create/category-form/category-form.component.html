@@ -1,1 +1,25 @@
-<p>category-form works!</p>
+<div class="form-container">
+    <form [formGroup]="categoryForm" class="category-form">
+    <h1 class="headline form-text"> {{isEditing ? 'Edit your category!' : 'Create a new category!'}} </h1>
+    
+    <mat-form-field appearance="fill" class="field-full-width">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Ex. Attack on Titan" formControlName="title" [(ngModel)]="category.title">
+      <mat-error *ngIf="categoryForm.invalid">Title is <strong>required</strong></mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="field-full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Ex. It goes about a boy who..." formControlName="description" [(ngModel)]="category.description" cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="3"
+      cdkAutosizeMaxRows="8"></textarea>
+    </mat-form-field>
+    
+    
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="onSubmitClick()" [disabled]="!categoryForm.valid">Submit</button>
+      <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+    </div>
+  </form>
+  </div>

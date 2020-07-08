@@ -1,24 +1,37 @@
-.fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
-  }
-  
-  .container {
-    padding: 10px;
-  }
-  
-  .form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-  }
-  
-  .form-element {
-    padding: 5px 0px 25px 2px;
-    width: 100%;
-  }
-  
-  .button {
-    width: 100%;
-  }
+.form-container{
+  display: flex;
+  width: -webkit-fill-available;
+  justify-content: center;
+  text-align: center;
+  margin: 2%;
+}
+.manga-form {
+  width: 100%;
+  min-width: 150px;
+  max-width: 500px;
+  color: floralwhite;
+}
+.form-text{
+  font-weight: 500;
+}
+
+.field-full-width {
+  width: 100%;
+  padding: 1px;
+}
+
+.form-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.form-radio-button {
+  margin: 5px;
+}
+
+.button-container{
+  display: flex;
+  justify-content: space-around;
+  padding: 2%;
+}

@@ -4,8 +4,10 @@ import { Anime } from 'src/app/models/anime';
 import { Category } from 'src/app/models/category';
 import { AnimeService } from 'src/app/services/anime-service/anime.service';
 import { CategoryService } from 'src/app/services/category-service/category.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-anime-form',
@@ -16,23 +18,31 @@ import { Location } from '@angular/common';
 export class AnimeFormComponent implements OnInit {
 
   animeForm: FormGroup;
+  isEditing: boolean;
   id: number;
   anime: Anime;
   categories: Category[];
-
+  isReadyToSubmit: boolean;
 
   constructor(private animeService: AnimeService,
               private categoryService: CategoryService,
               private route: ActivatedRoute,
+              private router: Router,
               private location: Location,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.createForm();
     this.getCategories();
 
     this.id = +this.route.snapshot.paramMap.get('id');
-    this.id ? this.getCurrentAnime() : this.setEmptyInitialValues();
+    this.id ? this.setEditingMode() : this.setEmptyInitialValues();
+  }
+
+  setEditingMode(){
+    this.isEditing = true;
+    this.getCurrentAnime();
   }
 
   createForm() {
@@ -47,6 +57,7 @@ export class AnimeFormComponent implements OnInit {
   }
 
   setEmptyInitialValues(){
+    this.isEditing = false;
     this.anime = {
       id: null,
       title: '',
@@ -59,8 +70,13 @@ export class AnimeFormComponent implements OnInit {
   }
 
   onSubmitClick(): void{
-    debugger;
-    console.log(this.anime);
+    if(this.animeForm.valid){
+      this.isEditing ? this.updateAnime() : this.createAnime();
+    }
+  }
+
+  onCancelClick(): void{
+    this.location.back();
   }
 
   getCurrentAnime(): void{
@@ -70,16 +86,33 @@ export class AnimeFormComponent implements OnInit {
 
   updateAnime(): void{
     this.animeService.updateAnime(this.anime)
-      .subscribe();
+      .subscribe(() => this.showMessageSuccess(), error => console.error(error));
   }
 
   createAnime(): void{
     this.animeService.addAnime(this.anime)
-      .subscribe();
+      .subscribe(() => this.showMessageSuccess(), error => console.error(error));
   }
 
   getCategories(): void{
     this.categoryService.getCategories()
       .subscribe(categories => this.categories = categories);
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      duration: 800,
+    });
+  }
+
+  showMessageSuccess(){
+
+    const message = this.isEditing ? 'The anime was successfully updated!' : 'The anime was successfully created!';
+
+    this.openSnackBar(message);
+
+    setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 1000);
   }
 }

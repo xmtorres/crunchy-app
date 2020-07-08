@@ -40,6 +40,7 @@ export class CategoryService {
 
   // POST a new category to the server
   addCategory(category: Category): Observable<Category> {
+    category.id = 0;
     return this.http.post<Category>(this.targetURL, category, this.httpOptions).pipe(
       tap((newCategory: Category) => console.log(`added category w/ id=${newCategory.id}`)),
       catchError(this.handleError<Category>('addCategory'))

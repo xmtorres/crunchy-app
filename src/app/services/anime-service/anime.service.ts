@@ -41,6 +41,7 @@ export class AnimeService {
 
   // POST a new anime to the server
   addAnime(anime: Anime): Observable<Anime> {
+    anime.id = 0;
     return this.http.post<Anime>(this.targetURL, anime, this.httpOptions).pipe(
       tap((newAnime: Anime) => console.log(`added anime w/ id=${newAnime.id}`)),
       catchError(this.handleError<Anime>('addAnime'))

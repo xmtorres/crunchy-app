@@ -6,8 +6,6 @@ import { AnimeService } from 'src/app/services/anime-service/anime.service';
 import { MangaService } from 'src/app/services/manga-service/manga.service';
 import { CategoryService } from 'src/app/services/category-service/category.service';
 
-import { ANIMES } from '../../../assets/mocks/animes';
-import { MANGAS } from '../../../assets/mocks/mangas';
 import { CATEGORIES } from '../../../assets/mocks/categories';
 
 @Component({
@@ -17,8 +15,8 @@ import { CATEGORIES } from '../../../assets/mocks/categories';
 })
 export class HomeComponent implements OnInit {
 
-  animes: Anime[] = ANIMES;
-  mangas: Manga[] = MANGAS;
+  animes: Anime[];
+  mangas: Manga[];
   categories: Category[] = CATEGORIES;
 
   constructor(private animeService: AnimeService,
@@ -32,17 +30,17 @@ export class HomeComponent implements OnInit {
 
   getAnimes(): void {
     this.animeService.getAnimes()
-      .subscribe(animes => this.animes = this.animes.concat(animes));
+      .subscribe(animes => this.animes = animes);
   }
 
   getMangas(): void{
     this.mangaService.getMangas()
-      .subscribe(mangas => this.mangas = this.mangas.concat(mangas));
+      .subscribe(mangas => this.mangas = mangas);
   }
 
   getCategories(): void{
     this.categoryService.getCategories()
-      .subscribe(categories => this.categories = this.categories.concat(categories));
+      .subscribe(categories => this.categories = categories);
   }
 
 }

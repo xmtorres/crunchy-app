@@ -40,6 +40,8 @@ export class MangaService {
 
   // POST a new manga to the server
   addManga(manga: Manga): Observable<Manga> {
+    manga.id = 0;
+    console.log(manga);
     return this.http.post<Manga>(this.targetURL, manga, this.httpOptions).pipe(
       tap((newManga: Manga) => console.log(`added manga w/ id=${newManga.id}`)),
       catchError(this.handleError<Manga>('addManga'))

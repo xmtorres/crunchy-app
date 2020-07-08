@@ -1,73 +1,119 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Manga } from 'src/app/models/manga';
+import { Category } from 'src/app/models/category';
+import { MangaService } from 'src/app/services/manga-service/manga.service';
+import { CategoryService } from 'src/app/services/category-service/category.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-manga-form',
   templateUrl: './manga-form.component.html',
   styleUrls: ['./manga-form.component.css']
 })
+
 export class MangaFormComponent implements OnInit {
 
-  formGroup: FormGroup;
-  titleAlert: string = 'This field is required';
-  post: any = '';
+  mangaForm: FormGroup;
+  isEditing: boolean;
+  id: number;
+  manga: Manga;
+  categories: Category[];
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private mangaService: MangaService,
+              private categoryService: CategoryService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private location: Location,
+              private formBuilder: FormBuilder,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.createForm();
-    this.setChangeValidate()
+    this.getCategories();
+
+    this.id = +this.route.snapshot.paramMap.get('id');
+    this.id ? this.setEditingMode() : this.setEmptyInitialValues();
+  }
+
+  setEditingMode(){
+    this.isEditing = true;
+    this.getCurrentManga();
+    console.log(this.manga);
   }
 
   createForm() {
-    let emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    this.formGroup = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.pattern(emailregex)]],
-      name: [null, Validators.required],
-      password: [null, [Validators.required, this.checkPassword]],
-      description: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
-      validate: '',
+    this.mangaForm = this.formBuilder.group({
       title: ['', [Validators.required]],
+      author:['', [Validators.required]],
+      description: [''],
+      categoryId: ['', [Validators.required]],
+      chapters: ['', [Validators.required]],
+      isComplete: [false],
+      imageUrl: ['', [Validators.required]],
     });
   }
 
-  setChangeValidate() {
-    this.formGroup.get('validate').valueChanges.subscribe(
-      (validate) => {
-        if (validate == '1') {
-          this.formGroup.get('name').setValidators([Validators.required, Validators.minLength(3)]);
-          this.titleAlert = "You need to specify at least 3 characters";
-        } else {
-          this.formGroup.get('name').setValidators(Validators.required);
-        }
-        this.formGroup.get('name').updateValueAndValidity();
-      }
-    )
+  setEmptyInitialValues(){
+    this.isEditing = false;
+    this.manga = {
+      id: null,
+      title: '',
+      author: '',
+      description: '',
+      categoryId: null,
+      chapters: null,
+      isComplete: false,
+      imageURL: '',
+    };
   }
 
-  get name() {
-    return this.formGroup.get('name') as FormControl
+  onSubmitClick(): void{
+    if(this.mangaForm.valid){
+      this.isEditing ? this.updateManga() : this.createManga();
+    }
   }
 
-  checkPassword(control) {
-    let enteredPassword = control.value
-    let passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-    return (!passwordCheck.test(enteredPassword) && enteredPassword) ? { 'requirements': true } : null;
+  onCancelClick(): void{
+    this.location.back();
   }
 
-
-  getErrorEmail() {
-    return this.formGroup.get('email').hasError('required') ? 'Field is required' :
-      this.formGroup.get('email').hasError('pattern') ? 'Not a valid emailaddress' :
-        this.formGroup.get('email').hasError('alreadyInUse') ? 'This emailaddress is already in use' : '';
+  getCurrentManga(): void{
+    this.mangaService.getManga(this.id)
+      .subscribe(manga => this.manga = manga);
   }
 
-  getErrorPassword() {
-    return this.formGroup.get('password').hasError('required') ? 'Field is required (at least eight characters, one uppercase letter and one number)' :
-      this.formGroup.get('password').hasError('requirements') ? 'Password needs to be at least eight characters, one uppercase letter and one number' : '';
+  updateManga(): void{
+    this.mangaService.updateManga(this.manga)
+      .subscribe(() => this.showMessageSuccess(), error => console.error(error));
   }
 
-  onSubmit(post) {
-    this.post = post;
+  createManga(): void{
+    this.mangaService.addManga(this.manga)
+      .subscribe(() => this.showMessageSuccess(), error => console.error(error));
+  }
+
+  getCategories(): void{
+    this.categoryService.getCategories()
+      .subscribe(categories => this.categories = categories);
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      duration: 800,
+    });
+  }
+
+  showMessageSuccess(){
+
+    const message = this.isEditing ? 'The manga was successfully updated!' : 'The manga was successfully created!';
+
+    this.openSnackBar(message);
+
+    setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 1000);
   }
 }
