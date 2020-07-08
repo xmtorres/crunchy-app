@@ -1,63 +1,52 @@
-<form [formGroup]="animeFormGroup" class="anime-form" >
-  <!-- Title Field -->
-  <mat-form-field class="field-full-width">
+<div class="form-container">
+  <form [formGroup]="animeForm" class="anime-form">
+  <h1 class="headline form-text">Create your anime!</h1>
+  
+  <mat-form-field appearance="fill" class="field-full-width">
     <mat-label>Title</mat-label>
-    <input matInput formControlName="title" placeholder="Ex. Attack on Titan">
-    <mat-error *ngIf="animeFormGroup.hasError('required')">
-      Title is <strong>required</strong>
-    </mat-error>
+    <input matInput placeholder="Ex. Attack on Titan" formControlName="title" [(ngModel)]="anime.title">
+    <mat-error *ngIf="animeForm.invalid">Title is <strong>required</strong></mat-error>
   </mat-form-field>
 
-  <!-- Description Field -->
-  <mat-form-field class="field-full-width">
+  <mat-form-field appearance="fill" class="field-full-width">
     <mat-label>Description</mat-label>
-    <input matInput formControlName="description" placeholder="Ex. It goes about a boy who...">
+    <textarea matInput placeholder="Ex. It goes about a boy who..." formControlName="description" [(ngModel)]="anime.description" cdkTextareaAutosize
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="5"></textarea>
   </mat-form-field>
-
-  <!-- Category Field -->
-  <mat-form-field appearance="fill">
+  
+  <mat-form-field appearance="fill" class="field-full-width">
     <mat-label>Category</mat-label>
-    <mat-select formControlName="categoryId">
-      <mat-option *ngFor="let category of categories" [value]="category.id">
-        {{category.title}}
-      </mat-option>
+    <mat-select formControlName="categoryId" [(ngModel)]="anime.categoryId">
+      <mat-option *ngFor="let category of categories" [value]="category.id"> {{category.title}} </mat-option>
     </mat-select>
-    <mat-error *ngIf="animeFormGroup.hasError('required')">
-      Title is <strong>required</strong>
-    </mat-error>
+    <mat-error *ngIf="animeForm.invalid">Category is <strong>required</strong></mat-error>
   </mat-form-field>
 
-  <!-- Episodes Field -->
-  <mat-form-field class="field-full-width">
+  <mat-form-field appearance="fill" class="field-full-width">
     <mat-label>Episodes</mat-label>
-    <input matInput type="number" formControlName="episodes"
-           placeholder="Ex. 59">
-    <mat-error *ngIf="animeFormGroup.hasError('required')">
-      Episodes is <strong>required</strong>
-    </mat-error>
+    <input matInput type="number" placeholder="Ex. 50" formControlName="episodes" [(ngModel)]="anime.episodes">
+    <mat-error *ngIf="animeForm.invalid">Episodes are <strong>required</strong></mat-error>
   </mat-form-field>
 
-  <!-- IsComplete Field -->
-  <mat-form-field class="field-full-width">
-    <mat-label>Is it complete?</mat-label>
-    <mat-radio-group formControlName="isComplete">
-      <mat-radio-button class="example-radio-button" [value]="true">Yes</mat-radio-button>
-      <mat-radio-button class="example-radio-button" [value]="false">No</mat-radio-button>
-    </mat-radio-group>
-    <mat-error *ngIf="animeFormGroup.hasError('required')">
-      This field is <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
+  <label id="form-radio-group-label" class="form-text">Is it complete?</label>
+  <mat-radio-group class="form-radio-group"
+  aria-labelledby="form-radio-group-label" formControlName="isComplete" [(ngModel)]="anime.isComplete">
+    <mat-radio-button [value]="true" class="form-radio-button">Yes</mat-radio-button>
+    <mat-radio-button [value]="false" class="form-radio-button">No</mat-radio-button>
+  </mat-radio-group>
 
-    <!-- Image Field -->
-  <mat-form-field class="field-full-width">
+  <mat-form-field appearance="fill" class="field-full-width">
     <mat-label>Image URL</mat-label>
-    <input matInput formControlName="imageURL"
-          placeholder="Ex. http://mysite.com/attackontitans.jpg">
-    <mat-hint>We recommend picking a 600x400 image!</mat-hint>
-    <mat-error *ngIf="animeFormGroup.hasError('required')">
-    Image URL is <strong>required</strong>
-    </mat-error>
-</mat-form-field>
-
+    <input matInput placeholder="Ex. mywebsite.com/attackontitans.jpg" formControlName="imageUrl" [(ngModel)]="anime.imageURL">
+    <mat-hint>We recommend using a 600x400 image!</mat-hint>
+    <mat-error>Image URL is <strong>required</strong></mat-error>
+  </mat-form-field>
+  
+  <div class="button-container">
+    <button mat-raised-button color="primary" (click)="onSubmitClick()">Submit</button>
+    <button mat-raised-button>Cancel</button>
+  </div>
 </form>
+</div>

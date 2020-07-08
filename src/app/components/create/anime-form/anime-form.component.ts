@@ -1,53 +1,70 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Anime } from 'src/app/models/anime';
+import { Category } from 'src/app/models/category';
 import { AnimeService } from 'src/app/services/anime-service/anime.service';
 import { CategoryService } from 'src/app/services/category-service/category.service';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Category } from 'src/app/models/category';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-anime-form',
   templateUrl: './anime-form.component.html',
   styleUrls: ['./anime-form.component.css']
 })
+
 export class AnimeFormComponent implements OnInit {
 
-  currentId: number;
+  animeForm: FormGroup;
+  id: number;
   anime: Anime;
   categories: Category[];
-  animeFormGroup: FormGroup;
+
 
   constructor(private animeService: AnimeService,
               private categoryService: CategoryService,
               private route: ActivatedRoute,
               private location: Location,
-              public formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder) { }
 
-  ngOnInit(): void {
-    this.getCategories();
-    this.currentId = +this.route.snapshot.paramMap.get('id');
-    console.log(this.currentId);
-    if(this.currentId){
-      this.getCurrentAnime();
-    }
+  ngOnInit() {
     this.createForm();
+    this.getCategories();
+
+    this.id = +this.route.snapshot.paramMap.get('id');
+    this.id ? this.getCurrentAnime() : this.setEmptyInitialValues();
   }
 
   createForm() {
-    this.animeFormGroup = this.formBuilder.group({
+    this.animeForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       description: [''],
       categoryId: ['', [Validators.required]],
       episodes: ['', [Validators.required]],
-      isComplete: ['', [Validators.required]],
-      imageURL: ['', [Validators.required]]
+      isComplete: [false],
+      imageUrl: ['', [Validators.required]],
     });
   }
 
+  setEmptyInitialValues(){
+    this.anime = {
+      id: null,
+      title: '',
+      description: '',
+      categoryId: null,
+      episodes: null,
+      isComplete: false,
+      imageURL: '',
+    };
+  }
+
+  onSubmitClick(): void{
+    debugger;
+    console.log(this.anime);
+  }
+
   getCurrentAnime(): void{
-    this.animeService.getAnime(this.currentId)
+    this.animeService.getAnime(this.id)
       .subscribe(anime => this.anime = anime);
   }
 
