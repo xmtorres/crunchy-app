@@ -1,7 +1,7 @@
 export interface Anime {
     id: number;
-    categoryId: number;
     title: string;
+    categoryId: number;
     description: string;
     episodes: number;
     isComplete: boolean;
