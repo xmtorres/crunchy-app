@@ -5,6 +5,8 @@ import { CategoryService } from 'src/app/services/category-service/category.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteModalComponent } from '../../modals/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-category-form',
@@ -18,6 +20,7 @@ export class CategoryFormComponent implements OnInit {
   id: number;
   category: Category;
   categories: Category[];
+  isDeleting = false;
 
 
   constructor(private categoryService: CategoryService,
@@ -25,7 +28,8 @@ export class CategoryFormComponent implements OnInit {
               private router: Router,
               private location: Location,
               private formBuilder: FormBuilder,
-              private _snackBar: MatSnackBar) { }
+              private _snackBar: MatSnackBar,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     this.createForm();
@@ -80,6 +84,11 @@ export class CategoryFormComponent implements OnInit {
       .subscribe(() => this.showMessageSuccess(), error => console.error(error));
   }
 
+  deleteCategory(): void{
+    this.categoryService.deleteCategory(this.category.id)
+    .subscribe(() => this.showMessageSuccess(), error => console.error(error));
+  }
+
   openSnackBar(message: string) {
     this._snackBar.open(message, '', {
       duration: 800,
@@ -88,12 +97,27 @@ export class CategoryFormComponent implements OnInit {
 
   showMessageSuccess(){
 
-    const message = this.isEditing ? 'The category was successfully updated!' : 'The category was successfully created!';
+    const message = this.isEditing ? 'The category was successfully updated!' : this.isDeleting ? 'The category was successfully deleted!' : 'The category was successfully created!';
 
     this.openSnackBar(message);
 
     setTimeout(() => {
       this.router.navigate(['/home']);
     }, 1000);
+  }
+
+  openDeleteDialog(): void{
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
+      width: '350px',
+      data: { accepted: false }
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      console.log('The dialog was closed');
+      if(data){
+        this.isDeleting = true;
+        this.deleteCategory();
+      };
+    });
   }
 }

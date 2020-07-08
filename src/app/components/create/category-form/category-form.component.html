@@ -20,6 +20,7 @@
     <div class="button-container">
       <button mat-raised-button color="primary" (click)="onSubmitClick()" [disabled]="!categoryForm.valid">Submit</button>
       <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+      <button mat-raised-button *ngIf="isEditing" color="warn" (click)="openDeleteDialog()">Delete</button>
     </div>
   </form>
   </div>
